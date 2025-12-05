@@ -94,7 +94,7 @@ import cors from "cors";
 
 // Inngest imports (fixed)
 import { serve } from "inngest/express";
-import { inngest, syncUser, deleteUserFromDB } from "./lib/inngest.js";
+import { inngest, functions } from "./lib/inngest.js";
 
 const app = express();
 
@@ -114,7 +114,7 @@ app.use(
   "/api/inngest",
   serve({
     client: inngest,
-    functions: [syncUser, deleteUserFromDB],
+    functions
   })
 );
 
