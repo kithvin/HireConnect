@@ -9,7 +9,7 @@ const app = express();
 // ✅ CORS 
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://hireconnect-ochre.vercel.app"],
+    origin: ["http://localhost:3000","https://hireconnect-murex.vercel.app"],
     credentials: true,
   })
 );
