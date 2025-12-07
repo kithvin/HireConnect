@@ -1,28 +1,22 @@
-// import mongoose from "mongoose";
-
-// import ENV from "../env.js";
-
-// export const connectDB = async () => {
-//   try {
-//     if (!ENV.DB_URL) {
-//       throw new Error("❌ MongoDB URL is not defined in the environment variables ❌");
-//     }
-//     await mongoose.connect(ENV.DB_URL);
-//     console.log("✅ MongoDB Connection Successful 🎯",conn.connection.host);
-//   } catch (error) {
-//     console.error("🔴 Error connecting to MongoDB ❌", error);
-//     process.exit(1); // 0 indicates success, 1 indicates failure
-//   }
-// };
 
 import mongoose from "mongoose";
 import { ENV } from "./env.js";
 
-export async function connectDB() {
-  try {
-    const conn = await mongoose.connect(ENV.DB_URL);
-    console.log("🟢 MongoDB Connected:", conn.connection.host);
-  } catch (error) {
-    console.error("❌ DB Connection Error:", error.message);
+let isConnected = false;
+
+export const connectDB = async () => {
+  if (isConnected) return;
+
+  if (!ENV.DB_URL) {
+    throw new Error("DB_URL is not defined in environment variables");
   }
-}
+
+  try {
+    await mongoose.connect(ENV.DB_URL);
+    isConnected = true;
+    console.log("🟢 MongoDB Connected");
+  } catch (err) {
+    console.error("❌ MongoDB connection error:", err.message);
+    throw err;
+  }
+};

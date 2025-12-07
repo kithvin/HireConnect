@@ -1,31 +1,70 @@
+
 import { StreamChat } from "stream-chat";
 import { ENV } from "./env.js";
 
-const apiKey = ENV.STREAM_API_KEY;
-const apiSecret = ENV.STREAM_API_SECRET;
+let streamClient = null;
 
-if (!apiKey || !apiSecret) {
-  throw new Error("Stream API key and secret are required");
-}
-
-export const chatClient = new StreamChat(apiKey, apiSecret);
-
-export const upsertStreamUser = async (userData) => {
-  try {
-    await chatClient.upsertUser(userData);
-    console.log("Stream user upserted successfully:", userData);
-  } catch (error) {
-    console.error("Error upserting user:", error);
-    throw error;
+const getStreamClient = () => {
+  if (!ENV.STREAM_API_KEY || !ENV.STREAM_API_SECRET) {
+    console.warn("⚠️ Stream credentials not set. Skipping Stream operations.");
+    return null;
   }
+
+  if (!streamClient) {
+    streamClient = StreamChat.getInstance(
+      ENV.STREAM_API_KEY,
+      ENV.STREAM_API_SECRET
+    );
+  }
+
+  return streamClient;
 };
 
-export const deleteStreamUser = async (userId) => {
-  try {
-    await chatClient.deleteUser(userId);
-    console.log("Stream user deleted successfully:",userId)
-  } catch (error) {
-    console.error("Error deleting the Stream user:", error);
-    throw error;
-  }
+/**
+ * Create or update a user in Stream Chat
+ */
+export const upsertStreamUser = async ({ id, name, image }) => {
+  const client = getStreamClient();
+  if (!client) return;
+
+  await client.upsertUser({
+    id,
+    name,
+    image,
+  });
+
+  console.log("✅ Stream user upserted:", id);
+};
+
+/**
+ * Delete a user from Stream Chat
+ */
+export const deleteStreamUser = async (id) => {
+  const client = getStreamClient();
+  if (!client) return;
+
+  await client.deleteUser(id, {
+    mark_messages_deleted: true,
+    hard_delete: true,
+  });
+
+  console.log("🗑️ Stream user deleted:", id);
+};
+
+/**
+ * Convenience: sync from Mongo User document
+ */
+export const syncStreamUser = async (user) => {
+  if (!user) return;
+
+  const name =
+    `${user.firstName || ""} ${user.lastName || ""}`.trim() || user.email;
+
+  await upsertStreamUser({
+    id: user.clerkId.toString(),
+    name,
+    image: user.imageUrl,
+  });
+
+  console.log("🔄 Stream user synced from Mongo user:", user.clerkId);
 };
