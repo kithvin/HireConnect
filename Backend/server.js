@@ -4,7 +4,7 @@ import { ENV } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
 import userRoutes from "./routes/userRoutes.js";
 import { clerkMiddleware } from "@clerk/express";
-import { protectRoute } from "./middleware/protectedRoute.js";
+import chatRoutes from "./routes/chatRoute.js";
 
 const app = express();
 
@@ -22,17 +22,15 @@ app.use(
 // 🟡 JSON body parser
 app.use(express.json());
 
+app.use("/api/chat",chatRoutes);
+
 // ✅ Public health check
 app.get("/", (req, res) => {
   console.log("HIT /");
   res.send("🚀 Backend working! 😄");
 });
 
-// ✅ Protected Video Calls route
-app.get("/video-calls", protectRoute, (req, res) => {
-  console.log("HIT /video-calls handler");
-  res.send("🎥 Video Calls service is up and running! ✅");
-});
+
 
 // ✅ API routes
 app.use("/api", userRoutes);
