@@ -3,33 +3,43 @@ import cors from "cors";
 import { ENV } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
 import userRoutes from "./routes/userRoutes.js";
+import { clerkMiddleware } from "@clerk/express";
+import { protectRoute } from "./middleware/protectedRoute.js";
 
 const app = express();
 
-// ✅ CORS 
+//Clerk middleware 
+app.use(clerkMiddleware());
+
+//  CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://hireconnect-murex.vercel.app"],
+    origin: ["http://localhost:3000", "https://hireconnect-murex.vercel.app"],
     credentials: true,
   })
 );
 
-// ✅ Parse JSON bodies
+// 🟡 JSON body parser
 app.use(express.json());
 
-// ✅ Health check route
+// ✅ Public health check
 app.get("/", (req, res) => {
+  console.log("HIT /");
   res.send("🚀 Backend working! 😄");
+});
+
+// ✅ Protected Video Calls route
+app.get("/video-calls", protectRoute, (req, res) => {
+  console.log("HIT /video-calls handler");
+  res.send("🎥 Video Calls service is up and running! ✅");
 });
 
 // ✅ API routes
 app.use("/api", userRoutes);
 
 // ------------- Local vs Vercel -------------
-
 const port = ENV.PORT || process.env.PORT || 5000;
 
-// Local dev: start server + connect DB
 if (!process.env.VERCEL) {
   app.listen(port, async () => {
     try {
@@ -42,5 +52,8 @@ if (!process.env.VERCEL) {
   });
 }
 
-
 export default app;
+
+
+
+

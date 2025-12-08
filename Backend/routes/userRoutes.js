@@ -1,5 +1,3 @@
-
-// src/routes/userRoutes.js
 import express from "express";
 import { connectDB } from "../lib/db.js";
 import User from "../models/User.js";
