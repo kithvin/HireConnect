@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 
+// Define the schema for the User model, representing user data in the database
 const userSchema = new mongoose.Schema(
   {
     clerkId: { type: String, required: true, unique: true },

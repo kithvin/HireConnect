@@ -11,6 +11,9 @@ const router = express.Router();
 
 /**
  * Create or update user after Clerk sign-in
+ * - Validates required fields (clerkId, email)
+ * - Upserts user in the database
+ * - Updates user in Stream (directly and as fallback using DB format)
  */
 router.post("/sync-user", async (req, res) => {
   try {
@@ -64,6 +67,9 @@ router.post("/sync-user", async (req, res) => {
 
 /**
  * Delete user (from DB + Stream)
+ * - Validates required field (clerkId)
+ * - Deletes user from the database
+ * - Deletes user from Stream
  */
 router.delete("/users/:clerkId", async (req, res) => {
   try {

@@ -1,15 +1,30 @@
-
 import { StreamChat } from "stream-chat";
 import { ENV } from "./env.js";
+import { StreamClient } from "@stream-io/node-sdk";
+
+// reuse keys for video client
+const apiKey = ENV.STREAM_API_KEY;
+const apiSecret = ENV.STREAM_API_SECRET;
 
 let streamClient = null;
 
+// chat client for messaging features
+export const chatClient = StreamChat.getInstance(
+  ENV.STREAM_API_KEY,
+  ENV.STREAM_API_SECRET
+);
+
+// video client for handling video calls and related features
+export const videoClient = new StreamClient(apiKey, apiSecret);
+
 const getStreamClient = () => {
+  // ensure Stream credentials are set before proceeding
   if (!ENV.STREAM_API_KEY || !ENV.STREAM_API_SECRET) {
     console.warn("⚠️ Stream credentials not set. Skipping Stream operations.");
     return null;
   }
 
+  // initialize the Stream client if not already initialized
   if (!streamClient) {
     streamClient = StreamChat.getInstance(
       ENV.STREAM_API_KEY,
@@ -68,3 +83,5 @@ export const syncStreamUser = async (user) => {
 
   console.log("🔄 Stream user synced from Mongo user:", user.clerkId);
 };
+
+export { streamClient };

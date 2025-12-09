@@ -23,7 +23,7 @@ export const protectRoute = async (req, res, next) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Attach user to request for later
+    // Attach user to request for later (e.g., for use in subsequent middleware or route handlers)
     req.user = user;
 
     next();
@@ -32,3 +32,5 @@ export const protectRoute = async (req, res, next) => {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+export default protectRoute;

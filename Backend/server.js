@@ -6,6 +6,9 @@ import userRoutes from "./routes/userRoutes.js";
 import { clerkMiddleware } from "@clerk/express";
 import chatRoutes from "./routes/chatRoute.js";
 
+// Import session routes
+import sessionRoutes from "./routes/sessionRoute.js";
+
 const app = express();
 
 //Clerk middleware 
@@ -23,8 +26,9 @@ app.use(
 app.use(express.json());
 
 app.use("/api/chat",chatRoutes);
+app.use("/api/session",sessionRoutes);
 
-// ✅ Public health check
+// Public health check
 app.get("/", (req, res) => {
   console.log("HIT /");
   res.send("🚀 Backend working! 😄");
@@ -32,7 +36,7 @@ app.get("/", (req, res) => {
 
 
 
-// ✅ API routes
+// API routes
 app.use("/api", userRoutes);
 
 // ------------- Local vs Vercel -------------
