@@ -3,19 +3,24 @@ import { ENV } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
 import cors from "cors";
 import { serve } from "inngest/express";
+import { clerkMiddleware } from "@clerk/express";
 import { inngest, functions } from "./lib/inngest.js";
+import chatRoutes from "./routes/chatRoutes.js";
 
 const app = express();
 
 // Middleware
 app.use(express.json());
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use(clerkMiddleware());
 
 app.use("/api/inngest", serve({ client: inngest, functions }));
+app.use("/api/chat", chatRoutes);
 
-app.get("/", (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({ msg: "api is up and Backend" });
 });
+
 
 const startServer = async () => {
   try {
