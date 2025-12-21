@@ -1,27 +1,42 @@
-import React from "react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/clerk-react";
 
-export default function TailwindTest() {
+export default function SignInPage() {
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-      <div className="bg-gray-800 p-8 rounded-2xl shadow-2xl max-w-md w-full text-center">
-        
-        <h1 className="text-3xl font-bold text-indigo-400 mb-2">
-          Tailwind CSS Working 🚀
+    <div className="min-h-screen flex items-center justify-center
+                    bg-gradient-to-br from-black via-slate-900 to-gray-900 px-4">
+
+      <div className="w-full max-w-md bg-gray-900/70 backdrop-blur
+                      border border-indigo-500/20 rounded-2xl
+                      shadow-2xl p-8 text-center">
+
+        <h1 className="text-3xl font-extrabold mb-2
+                       bg-gradient-to-r from-indigo-400 to-purple-500
+                       bg-clip-text text-transparent">
+          Welcome to HireConnect
         </h1>
 
-        <p className="text-gray-300 mb-6">
-          If you see colors, spacing, and rounded corners, Tailwind is set up correctly.
-        </p>
+        {/* USER NOT SIGNED IN */}
+        <SignedOut>
+          <p className="text-gray-400 text-sm mb-8">
+            Sign in to continue
+          </p>
 
-        <div className="flex gap-4 justify-center">
-          <button className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition">
-            Primary
-          </button>
+          <SignInButton mode="modal">
+            <button className="w-full py-3 rounded-xl
+                               bg-gradient-to-r from-indigo-500 to-purple-600
+                               text-white font-semibold">
+              Sign in
+            </button>
+          </SignInButton>
+        </SignedOut>
 
-          <button className="px-6 py-2 border border-gray-500 text-gray-300 rounded-lg hover:bg-gray-700 transition">
-            Secondary
-          </button>
-        </div>
+        {/* USER ALREADY SIGNED IN */}
+        <SignedIn>
+          <p className="text-gray-400 mb-4">
+            You are already signed in
+          </p>
+          <UserButton afterSignOutUrl="/" />
+        </SignedIn>
 
       </div>
     </div>
