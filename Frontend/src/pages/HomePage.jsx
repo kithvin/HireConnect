@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import HomePageNavbar from "../component/HomePageNavbar";
+import Herosection from "../component/Herosection";
+import FeatureSection from "../component/FeatureSection";
+import ChatBot from "../component/ChatBot";
 
-const HomePage = () => {
+function HomePage() {
   return (
-    <div>HomePage</div>
-  )
+    <div className="bg-gradient-to-br from-black via-slate-900 to-gray-900 min-h-screen">
+      <HomePageNavbar />
+      <Herosection />
+      <FeatureSection />
+      <ChatBot />
+    </div>
+  );
 }
 
-export default HomePage
+export default HomePage;

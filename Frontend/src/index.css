@@ -1,3 +1,86 @@
 @import "tailwindcss";
 
 @plugin "daisyui";
+
+/* Hide scrollbar for Chrome, Safari and Edge */
+::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Hide scrollbar for Firefox */
+  html {
+    scrollbar-width: none;
+  }
+  
+  /* Prevent horizontal scroll issues */
+  body {
+    overflow-x: hidden;
+  }
+  
+  /* Text typing animation (W → t) */
+  .typing-text {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    animation: typing 4s steps(30, end) infinite;
+  }
+  
+  /* Underline animation */
+  .typing-line {
+    position: absolute;
+    left: 0;
+    bottom: -8px;
+    height: 4px;
+    background-color: white;
+    width: 0;
+    animation: line-grow 4s ease-in-out infinite;
+  }
+  
+  /* Keyframes */
+  @keyframes typing {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 100%;
+    }
+    70% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+    }
+  }
+  
+  @keyframes line-grow {
+    0% {
+      width: 0;
+    }
+    50% {
+      width: 100%;
+    }
+    70% {
+      width: 100%;
+    }
+    100% {
+      width: 0;
+    }
+  }
+  
+  /* Brain animation */
+  @keyframes brainOnOff {
+    0%, 100% {
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #7c3aed);
+    }
+    50% {
+      opacity: 0.4;
+      filter: drop-shadow(0 0 0px transparent);
+    }
+  }
+  
+  .animate-brainOnOff {
+    animation: brainOnOff 2.5s ease-in-out infinite;
+  }
+  
